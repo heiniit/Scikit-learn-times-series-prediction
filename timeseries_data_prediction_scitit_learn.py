@@ -14,7 +14,12 @@ from datetime import date
 from sklearn_pandas import DataFrameMapper
 from sklearn.pipeline import Pipeline
 
-data = pd.read_csv(".\TsData.csv")
+# Different amount of data 
+data = pd.read_csv(".\TsData_HalfYear.csv")
+#data = pd.read_csv(".\TsData_OneYear.csv")
+#data = pd.read_csv(".\TsData_FiveYears.csv")
+
+
 data.columns=["date", "value"]
 data["year"] = data.apply(lambda row: row["date"][0:4], axis=1)
 data["month"] = data.apply(lambda row: row["date"][5:7], axis=1)
@@ -40,8 +45,8 @@ mapper = DataFrameMapper([
 
 # Different kind of models...
 pipeline = Pipeline([("mapper", mapper), ("model", NuSVR(kernel="rbf"))])
-#pipeline = Pipeline([("mapper", mapper), ("model", MLPRegressor(hidden_layer_sizes=(50,), activation="logistic"))])
-#pipeline = Pipeline([("mapper", mapper), ("model", DecisionTreeRegressor(max_depth=5))])
+#pipeline = Pipeline([("mapper", mapper), ("model", MLPRegressor(hidden_layer_sizes=(50,), activation="logistic", verbose=True))])
+#pipeline = Pipeline([("mapper", mapper), ("model", DecisionTreeRegressor())])
 
 X = train[["hour", "day", "month", "year", "weekday"]]
 y = train["value"]
